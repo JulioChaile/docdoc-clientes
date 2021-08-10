@@ -1,0 +1,133 @@
+// app global css
+@font-face {
+  font-family: "Avenir Next";
+  src:  local("Avenir Next Bold"),
+        url("./fonts/AvenirNext-Bold-01.ttf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src:  local("Avenir Next Demi Bold"),
+        url("./fonts/AvenirNext-DemiBold-03.ttf") format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src:  local("Avenir Next"),
+        url("./fonts/AvenirNext-Medium-06.ttf") format("truetype");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src:  local("Avenir Next"),
+        url("./fonts/AvenirNext-MediumItalic-07.ttf") format("truetype");
+  font-weight: 500;
+  font-style : italic;
+}
+
+*[class*="avenir-next"] {
+  font-family: "Avenir Next" !important;
+}
+
+*[class*="--bold"] {
+  font-weight: bold !important;
+}
+
+*[class*="--demibold"] {
+  font-weight: 600 !important;
+}
+
+*[class*="--medium"] {
+  font-weight: 500 !important;
+}
+
+*[class*="--italic"] {
+  font-style : italic !important;
+}
+
+.nuevo-fondo/*, body::after*/ {
+  background: -moz-linear-gradient(50% 100% 90deg,rgba(255, 255, 255, 0.5) 0%,rgba(255, 255, 255, 0.5) 75.7%,rgba(255, 255, 255, 0.5) 88.16%,rgba(253, 253, 253, 0.5) 92.11%,rgba(245, 245, 245, 0.5) 94.23%,rgba(231, 231, 231, 0.5) 95.92%,rgba(212, 212, 212, 0.5) 97.38%,rgba(187, 187, 187, 0.5) 98.69%,rgba(157, 157, 157, 0.5) 99.88%,rgba(153, 153, 153, 0.5) 100%) !important;
+  background: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 75.7%, rgba(255, 255, 255, 0.5) 88.16%, rgba(253, 253, 253, 0.5) 92.11%, rgba(245, 245, 245, 0.5) 94.23%, rgba(231, 231, 231, 0.5) 95.92%, rgba(212, 212, 212, 0.5) 97.38%, rgba(187, 187, 187, 0.5) 98.69%, rgba(157, 157, 157, 0.5) 99.88%, rgba(153, 153, 153, 0.5) 100%) !important;
+  background: -webkit-gradient(linear,50% 100% ,50% 0% ,color-stop(0,rgba(255, 255, 255, 0.5) ),color-stop(0.757,rgba(255, 255, 255, 0.5) ),color-stop(0.8816,rgba(255, 255, 255, 0.5) ),color-stop(0.9211,rgba(253, 253, 253, 0.5) ),color-stop(0.9423,rgba(245, 245, 245, 0.5) ),color-stop(0.9592,rgba(231, 231, 231, 0.5) ),color-stop(0.9738,rgba(212, 212, 212, 0.5) ),color-stop(0.9869,rgba(187, 187, 187, 0.5) ),color-stop(0.9988,rgba(157, 157, 157, 0.5) ),color-stop(1,rgba(153, 153, 153, 0.5) )) !important;
+  background: -o-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 75.7%, rgba(255, 255, 255, 0.5) 88.16%, rgba(253, 253, 253, 0.5) 92.11%, rgba(245, 245, 245, 0.5) 94.23%, rgba(231, 231, 231, 0.5) 95.92%, rgba(212, 212, 212, 0.5) 97.38%, rgba(187, 187, 187, 0.5) 98.69%, rgba(157, 157, 157, 0.5) 99.88%, rgba(153, 153, 153, 0.5) 100%) !important;
+  background: -ms-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 75.7%, rgba(255, 255, 255, 0.5) 88.16%, rgba(253, 253, 253, 0.5) 92.11%, rgba(245, 245, 245, 0.5) 94.23%, rgba(231, 231, 231, 0.5) 95.92%, rgba(212, 212, 212, 0.5) 97.38%, rgba(187, 187, 187, 0.5) 98.69%, rgba(157, 157, 157, 0.5) 99.88%, rgba(153, 153, 153, 0.5) 100%) !important;
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#999999' ,GradientType=0)" !important;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 75.7%, rgba(255, 255, 255, 0.5) 88.16%, rgba(253, 253, 253, 0.5) 92.11%, rgba(245, 245, 245, 0.5) 94.23%, rgba(231, 231, 231, 0.5) 95.92%, rgba(212, 212, 212, 0.5) 97.38%, rgba(187, 187, 187, 0.5) 98.69%, rgba(157, 157, 157, 0.5) 99.88%, rgba(153, 153, 153, 0.5) 100%) !important;
+  filter: alpha(opacity=50) progid:DXImageTransform.Microsoft.Alpha(opacity=50) progid:DXImageTransform.Microsoft.gradient(startColorstr='#999999',endColorstr='#FFFFFF' , GradientType=0) !important;
+}
+/*
+body::after {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+*/
+.busqueda-input {
+  border-radius: 28px;
+  background-color: white;
+  width: auto;
+  max-width: 584px;
+  height: 44px;
+  margin: 60px auto 0px auto;
+}
+
+.busqueda-input .q-field__control, .busqueda-input .q-field__marginal {
+  height: 44px !important;
+}
+
+.casos__container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding: 0px;
+  margin: 0px;
+}
+
+.filas_ > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.casos__container > div {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+}
+
+.filas__container {
+  background-color: #ffffff;
+  width: 100%;
+  color: #000 !important;
+  height : auto;
+  padding: 0;
+  border-radius : 7px;
+  -moz-border-radius : 7px;
+  -webkit-border-radius : 7px;
+}
+
+.filas_ {
+  background : -moz-linear-gradient(50% 100% 90deg,rgba(255, 255, 255, 0.5) 0%,rgba(253, 253, 253, 0.5) 30.79%,rgba(244, 244, 244, 0.5) 49.03%,rgba(230, 230, 230, 0.5) 64%,rgba(210, 210, 210, 0.5) 77.19%,rgba(184, 184, 184, 0.5) 89.1%,rgba(153, 153, 153, 0.5) 100%);
+  background : -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(253, 253, 253, 0.5) 30.79%, rgba(244, 244, 244, 0.5) 49.03%, rgba(230, 230, 230, 0.5) 64%, rgba(210, 210, 210, 0.5) 77.19%, rgba(184, 184, 184, 0.5) 89.1%, rgba(153, 153, 153, 0.5) 100%);
+  background : -webkit-gradient(linear,50% 100% ,50% 0% ,color-stop(0,rgba(255, 255, 255, 0.5) ),color-stop(0.3079,rgba(253, 253, 253, 0.5) ),color-stop(0.4903,rgba(244, 244, 244, 0.5) ),color-stop(0.64,rgba(230, 230, 230, 0.5) ),color-stop(0.7719,rgba(210, 210, 210, 0.5) ),color-stop(0.891,rgba(184, 184, 184, 0.5) ),color-stop(1,rgba(153, 153, 153, 0.5) ));
+  background : -o-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(253, 253, 253, 0.5) 30.79%, rgba(244, 244, 244, 0.5) 49.03%, rgba(230, 230, 230, 0.5) 64%, rgba(210, 210, 210, 0.5) 77.19%, rgba(184, 184, 184, 0.5) 89.1%, rgba(153, 153, 153, 0.5) 100%);
+  background : -ms-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0%, rgba(253, 253, 253, 0.5) 30.79%, rgba(244, 244, 244, 0.5) 49.03%, rgba(230, 230, 230, 0.5) 64%, rgba(210, 210, 210, 0.5) 77.19%, rgba(184, 184, 184, 0.5) 89.1%, rgba(153, 153, 153, 0.5) 100%);
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#999999' ,GradientType=0)";
+  background : linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0%, rgba(253, 253, 253, 0.5) 30.79%, rgba(244, 244, 244, 0.5) 49.03%, rgba(230, 230, 230, 0.5) 64%, rgba(210, 210, 210, 0.5) 77.19%, rgba(184, 184, 184, 0.5) 89.1%, rgba(153, 153, 153, 0.5) 100%);
+  filter: alpha(opacity=50) progid:DXImageTransform.Microsoft.Alpha(opacity=50) progid:DXImageTransform.Microsoft.gradient(startColorstr='#999999',endColorstr='#FFFFFF' , GradientType=0);
+  padding: inherit;
+  border-radius : inherit;
+  -moz-border-radius : inherit;
+  -webkit-border-radius : inherit;
+  width: inherit;
+  height: inherit;
+  font-family: "Avenir Next";
+  font-weight: 600;
+}
