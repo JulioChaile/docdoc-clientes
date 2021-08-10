@@ -513,6 +513,7 @@ export default {
           this.paso = 'VerificarUsuario'
         }
         if (redirect) {
+          this.getToken()
           this.redirect()
         }
       })
