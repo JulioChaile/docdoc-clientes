@@ -2,8 +2,8 @@
   "name": "docdoc",
   "version": "1.0.0",
   "description": "A Quasar Framework app",
-  "productName": "Docdoc! Gestión",
-  "cordovaId": "org.cordova.quasar.app",
+  "productName": "Docdoc! Clientes",
+  "cordovaId": "com.docdoc_clientes.app",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",

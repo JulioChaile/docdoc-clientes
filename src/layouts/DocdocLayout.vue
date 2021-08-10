@@ -177,6 +177,7 @@ import request from '../request'
 import html2canvas from 'html2canvas'
 import LoadingInButton from '../components/LoadingInButton'
 import VentanaUsuario from '../components/UI/VentanaUsuario'
+import FCMPushNotifications from '../assets/FCMPushNotifications'
 
 export default {
   name: 'DocdocLayout',
@@ -254,6 +255,7 @@ export default {
     }
   },
   created () {
+    FCMPushNotifications(this)
     this.isLoggedIn = auth.isLoggedIn
     if (this.isLoggedIn) {
       request.Get('/movimientos/movimientos-del-dia', {}, (r) => {

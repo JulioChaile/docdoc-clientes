@@ -478,6 +478,17 @@ export default {
       }
       this.$router.push({ path: path })
     },
+    async getToken() {
+      const token = await window.FCM.getToken()
+
+      request.Post('/usuarios/set-token-app', {TokenApp: token}, r => {
+        if (r.Error) {
+          this.$q.notify(r.Error)
+        } else {
+          this.$q.notify('Token guardado')
+        }
+      })
+    },
     login () {
       this.loading = true
       auth.login(this.user, (DebeCambiarPass) => {
@@ -486,6 +497,7 @@ export default {
           this.oldPass = this.user.Password
           this.paso = 'CambiarPassword'
         } else if (DebeCambiarPass === 'N') {
+          this.getToken()
           this.redirect()
         }
       })
