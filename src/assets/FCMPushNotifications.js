@@ -46,21 +46,23 @@ export default (v) => {
                     {
                         label: 'Ver caso',
                         color: 'primary',
-                        handler: () => { this.tapped(p) }
+                        handler: () => {
+                            const idQuery = query.id ? parseInt(query.id) : 0
+                            const id = parseInt(p.id)
+            
+                            const enCaso = currentPath.includes('Caso') && id === idQuery
+
+                            if (enCaso) {
+                                v.forceRender()
+                            } else {
+                                this.tapped(p)
+                            }
+                        }
                     }
                 ]
             },
             tapped(p) {
-                const idQuery = query.id ? parseInt(query.id) : 0
-                const id = parseInt(p.id)
-
-                const enCaso = currentPath.includes('Caso') && id === idQuery
-
-                if (enCaso) {
-                    v.forceRender()
-                } else {
-                    routerPush('Caso', { id })
-                }
+                routerPush('Caso', { id })
             },
             icon: 'work'
         }
