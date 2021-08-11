@@ -481,7 +481,7 @@ export default {
     async getToken() {
       const token = await window.FCM.getToken()
 
-      request.Post('/usuarios/set-token-app', {TokenApp: token}, r => {
+      request.Post('/usuarios/set-token-app-cliente', {TokenApp: token}, r => {
         if (r.Error) {
           this.$q.notify(r.Error)
         } else {
