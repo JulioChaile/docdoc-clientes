@@ -32,37 +32,37 @@ export default (v) => {
 
     const n = {
         /*
-        Muestra una alerta de "Nuevo Mensaje" de un caso, al ser tocada la notificacion redirige al chat del id que se le envio
+        Muestra una alerta de "Nuevo Movimiento" de un caso, al ser tocada la notificacion redirige al caso del id que se le envio
         {
-            tipo: "chatMensaje",
-            id: Id del chat,
-            caratula: Caratula del caso,
-            telefono: Telefono de la persona
+            tipo: "nuevoMovimiento",
+            id: Id del caso
         }
         */
-        chatMensaje: {
+        nuevoMovimiento: {
             accion: true,
-            noti(p) {
-                const id = parseInt(query.id)
-                const idChat = parseInt(p.id)
-
-                return !(currentPath.includes('Chat') && id == idChat)
-            },
+            noti() { return true },
             botones(p) {
                 return [
                     {
-                        label: 'Ir al chat',
+                        label: 'Ver caso',
                         color: 'primary',
                         handler: () => { this.tapped(p) }
                     }
                 ]
             },
             tapped(p) {
-                p.caratula = p.caratula || 'Sin caratula'
-                const { caratula, id, telefono} = p 
-                routerPush('Chat', { caratula, id, telefono })
+                const idQuery = query.id ? parseInt(query.id) : 0
+                const id = parseInt(p.id)
+
+                const enCaso = currentPath.includes('Caso') && id === idQuery
+
+                if (enCaso) {
+                    v.forceRender()
+                } else {
+                    routerPush('Caso', { id })
+                }
             },
-            icon: 'announcement'
+            icon: 'work'
         }
     }
 

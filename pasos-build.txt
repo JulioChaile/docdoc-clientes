@@ -1,0 +1,16 @@
+En vscode
+quasar build -m android
+
+En cmd
+- cd C:\Program Files\Java\jdk1.8.0_291\bin 
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore C:\Proyectos\docdoc-clientes\dist\cordova\android\apk\release\app-release-unsigned.apk alias_name
+- cd C:\Users\usuario\AppData\Local\Android\Sdk\build-tools\30.0.3
+- zipalign -v 4 C:\Proyectos\docdoc-clientes\dist\cordova\android\apk\release\app-release-unsigned.apk HelloWorld.apk
+
+project.propierties
+cordova.system.library.1=com.google.firebase:firebase-core:16.0.8 
+cordova.system.library.2=com.google.firebase:firebase-messaging:17.5.0
+
+app-FCMPlugin.graddle
+classpath 'com.android.tools.build:gradle:2.3.+'
+classpath 'com.google.gms:google-services:4.0.1'

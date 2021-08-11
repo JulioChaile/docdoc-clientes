@@ -75,7 +75,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container :key="pageKey">
       <router-view />
     </q-page-container>
 
@@ -183,6 +183,7 @@ export default {
   name: 'DocdocLayout',
   data () {
     return {
+      pageKey: 0,
       leftDrawerOpen: false,
       isLoggedIn: false,
       consultaModal: false,
@@ -300,6 +301,9 @@ export default {
   },
   methods: {
     openURL,
+    forceRender () {
+      this.pageKey += 1
+    },
     altaMovimiento () {
       let idCaso = 0
       if (this.$route.params && this.$route.params.idCaso) {
