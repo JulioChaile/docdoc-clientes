@@ -1,40 +1,18 @@
 <template>
   <div class="row container">
-    <div class="col-12" style="display:flex; justify-content:flex-end;">
-      <div>
-        <q-icon name="timeline" color="primary" class="icono_objetivos" right size="20px" @click="verObjetivos=true">
-          <q-tooltip>Ver Objetivos</q-tooltip>
-        </q-icon>
-        <q-dialog v-model="verObjetivos" style="width: auto; height:auto;">
-          <ObjetivosCaso
-            :IdCaso="datos.IdCaso"
-            @cerrar="verObjetivos = false"
-          />
-        </q-dialog>
-        <q-icon name="assignment" color="primary" class="icono_movimientos" right size="20px" @click="verMovimientos=true">
-          <q-tooltip>Ver Movimientos</q-tooltip>
-        </q-icon>
-        <q-dialog v-model="verMovimientos" style="width: auto; height:auto;">
-          <MovimientosCaso
-            :IdCaso="datos.IdCaso"
-            @cerrar="verMovimientos = false"
-          />
-        </q-dialog>
-      </div>
-    </div>
     <div class="col-12">
       <!-- Datos del caso como archivo -->
       <div class="row">
         <div class="col-12 col-sm-6">
           <data-item
-            :text="caratulaVer()"
+            :text="datos.Caratula"
             text-class="text-weight-medium text-h4"
             label="Caratula"
             labelColor="accent"
           />
           <q-tooltip>{{ datos.Caratula }}</q-tooltip>
         </div>
-        <q-space></q-space>
+        <!--q-space></q-space>
         <div class="col-12 col-sm-6 contenedor_badges">
           <div class="row q-pt-md">
           <div class="col-6 col-sm-12 col-lg-10 estado">
@@ -49,96 +27,7 @@
               Nro: {{ datos.NroExpediente ? datos.NroExpediente : '--' }}
             </q-badge>
           </div>
-        </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-12">
-          <div class="row">
-            <!-- Fechas -->
-            <div class="col-12 col-sm-5">
-              <div class="row q-pl-sm">
-                <div class="col-12">
-                  <div class="contenedor_fecha">
-                    <span class="text-body2 text-weight-light">
-                      Creado <span v-if="casoViejo" class="text-weight-light">hace </span><span class="text-body1 text-weight-bold">{{ diasDesdeCreacion() }}
-                        <q-tooltip content-class="bg-teal" anchor="center right" self="center left" :offset="[10, 10]">
-                          <span class="text-body2">
-                            {{ datos.FechaAlta ? datos.FechaAlta.slice(0, 10) : 'Sin fecha' }}
-                          </span>
-                        </q-tooltip>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <q-space></q-space>
-            <div class="col-12 col-sm-6">
-              <div class="row">
-                <div class="col-6 q-pl-sm">
-                  <data-item
-                    :text="datos.Origen ? datos.Origen : 'Sin origen'"
-                    text-class="text-weight-light text-h6"
-                    label="Origen"
-                    labelColor="accent"
-                    no-gutters
-                  />
-                </div>
-                <div class="col-6 q-pl-sm">
-                  <data-item
-                    :text="datos.Nominacion ? datos.Nominacion : 'Sin nominación'"
-                    text-class="text-weight-light text-h6"
-                    label="Nominación"
-                    labelColor="accent"
-                    no-gutters
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Datos del ambito -->
-      <div class="row q-pt-sm">
-        <!-- Competencia -->
-        <div class="col-6 col-sm-3 col-md-6 col-lg-3">
-          <data-item
-            :text="datos.Competencia ? datos.Competencia : 'Sin competencia'"
-            text-class="text-weight-light text-h6"
-            label="Competencia"
-            labelColor="accent"
-          />
-        </div>
-        <!-- Tipo de caso -->
-        <div class="col-6 col-sm-3 col-md-6 col-lg-3">
-          <data-item
-            :text="datos.TipoCaso ? datos.TipoCaso : 'Sin tipo de caso'"
-            text-class="text-weight-light text-h6"
-            label="Tipo de Caso"
-            labelColor="accent"
-          />
-        </div>
-        <!-- Ambito de Gestion -->
-        <div class="col-6 col-sm-3 col-md-6 col-lg-3">
-          <data-item
-            :text="datos.Juzgado ? datos.Juzgado : 'Sin ámbito de gestión'"
-            text-class="text-weight-light text-h6"
-            label="Ámbito de Gestión"
-            labelColor="accent"
-          />
-        </div>
-        <!-- Nominación -->
-        <div class="col-6 col-sm-3 col-md-6 col-lg-3">
-          <data-item
-            :text="datos.EstadoAmbitoGestion ? datos.EstadoAmbitoGestion : 'Sin estado'"
-            text-class="text-weight-light text-h6"
-            label="Estado de Ámbito de Gestión"
-            labelColor="accent"
-          />
-        </div>
+        </div-->
       </div>
     </div>
   </div>

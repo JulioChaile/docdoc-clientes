@@ -1,9 +1,9 @@
 <template>
-  <q-card style="width: 100%">
+  <q-card style="width: 100%; max-width: 1000px !important">
     <q-item style="background-color: black;">
       <span class="q-subheading" style="color:white;">Generar PDF</span>
     </q-item>
-    <div style="padding:1rem;">
+    <div class="q-pa-md">
       <span>
         <p>
           Ingrese el texto con el que comenzara el PDF (opcional)
@@ -53,11 +53,6 @@
         </q-carousel-slide>
       </q-carousel>
       <div class="row justify-center" style="margin-top: 15px; margin-bottom: 15px">
-        <q-btn
-          color="teal"
-          label="Enviar Mail"
-          @click="enviarMail()"
-        />
         <q-btn
           v-if="!generando"
           style="margin-left: 10px; margin-right: 10px"
@@ -133,21 +128,6 @@ export default {
         }
       })
       location.href = `https://io.docdoc.com.ar/api/multimedia-caso/generar-pdf?Multimedia=${JSON.stringify(multimedia)}&ContenidoPDF=${contenidoPDF}`
-    },
-    enviarMail () {
-      const contenidoPDF = this.contenidoPDF.replace(/\r?\n/g, '<br>')
-      const multimedia = this.MultimediaPDF.map(m => {
-        return {
-          IdMultimedia: m.IdMultimedia,
-          URL: m.URL,
-          Tipo: m.Tipo,
-          OrigenMultimedia: m.OrigenMultimedia,
-          Titulo: m.Titulo,
-          Descripcion: m.Descripcion.replace(/\r?\n/g, '<br>')
-        }
-      })
-
-      this.$emit('enviarMail', multimedia, contenidoPDF)
     }
   }
 }

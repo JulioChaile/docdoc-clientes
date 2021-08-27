@@ -14,8 +14,8 @@
         </q-btn>
 
         <q-toolbar-title>{{ $route.name }}</q-toolbar-title>
-
-        <div>
+        
+        <!--div>
           <q-btn-dropdown
             v-if="mostrarUsuario()"
             flat
@@ -30,7 +30,7 @@
               @vencimientosVistos="verVencimientos = false"
             />
           </q-btn-dropdown>
-        </div>
+        </div-->
       </q-toolbar>
     </q-header>
     <q-drawer
@@ -80,7 +80,7 @@
     </q-page-container>
 
     <q-btn
-      v-if="$route.name !== 'Login'"
+      v-if="$route.name === 'Mis Consultas'"
       round
       class="fixed boton_layout_consulta"
       color="primary"

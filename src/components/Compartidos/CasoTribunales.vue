@@ -1,155 +1,17 @@
 <template>
   <div>
-    <q-expansion-item class="bg-white q-pb-lg" default-opened>
-      <!-- Header -->
-      <template v-slot:header>
-        <q-item-section avatar>
-          <q-icon name="adjust" color="primary" size="md" />
-        </q-item-section>
-
-        <q-item-section>
-          <span class="text-weight-bold">
-            {{ caso.Juzgado ? caso.Juzgado : 'Sin datos' }}
-          </span>
-        </q-item-section>
-      </template>
-
-      <!-- Nominacion -->
-      <q-expansion-item default-opened>
-        <template v-slot:header>
-          <q-item-section avatar>
-            <q-avatar icon="filter_none" text-color="primary" />
-          </q-item-section>
-
-          <q-item-section>
-             <span>
-               {{ caso.Nominacion ? caso.Nominacion : 'Sin datos' }}
-             </span>
-          </q-item-section>
-        </template>
-
-        <!-- Inside content (Caso) -->
-        <q-expansion-item class="expansion-caso" default-opened>
-          <template v-slot:header>
-            <q-item-section avatar @click="verCaso(caso)">
-              <q-avatar class="caso" icon="description" color="primary" text-color="white">
-                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 0]">Ver Caso</q-tooltip>
-              </q-avatar>
-            </q-item-section>
-
-            <q-item-section class="caso_header">
-              <span>
-                {{ caso.Caratula }} | {{ caso.NroExpediente ? `Expte: ${caso.NroExpediente}` : 'Sin expediente' }}
-            </span>
-            </q-item-section>
-
-            <q-item-section side>
-              <q-btn
-                icon="add"
-                color="gray"
-                rounded
-                flat
-                outline
-                @click="altaMovimiento(caso)"
-              >
-                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
-                  Nuevo Movimiento
-                </q-tooltip>
-              </q-btn>
-            </q-item-section>
-          </template>
-
-          <!-- Alta de Movimiento -->
-          <q-dialog v-model="modalAlta" v-if="modalAlta" no-backdrop-dismiss no-esc-dismiss>
-            <NuevoMovimiento
-              v-if="modalAlta"
-              :movimientoAlta="this.movimientoAlta"
-              :Casos="this.Casos"
-              :caso="this.caso"
-              :IdCaso="this.caso.IdCaso"
-              @cancelarAlta="cancelarAlta"
-              @guardarmovimiento="guardarMovimiento"
-              @nuevochat="nuevoChat"
-              @enviarmensaje="enviarMensaje"
-            />
-          </q-dialog>
-          <!-- Contenido del caso (Movimientos) -->
-          <TarjetaTribunales
-            v-for="movimiento in movimientosDelCaso(computedMovimientos)"
-            :key="movimiento.IdMovimientoCaso"
-            :movimiento="movimiento"
-            :idChat="parseInt(idChat)"
-            :datosChat="datosChat"
-            :ultimosMovimientos="ultimosMovimientos(movimiento).slice(0, 3)"
-            @mostrarObjetivos="mostrarObjetivos(movimiento)"
-            @realizarMovimiento="realizarMovimiento(movimiento, caso.IdCaso)"
-            style="margin-bottom:0.6rem;"
-          />
-          <div
-            v-if="computedObjSinMovs.length"
-            style="display: flex; align-items: center; flex-wrap: wrap; padding: 0 1rem 1rem 1rem;"
-          >
-            <q-icon icon="timeline" />
-            <h1 style="font-size: 1.1rem; font-weight: 400;">Objetivos sin Movimientos:</h1>
-            <q-chip
-              clickable
-              color="secondary"
-              v-for="objetivo in ObjSinMovs"
-              :key="objetivo.IdObjetivo"
-              @click="mostrarMovObjLibre(objetivo.IdObjetivo)"
-              style="margin-left: 1rem"
-            >
-              {{ objetivo.Objetivo }}
-              <q-tooltip>
-                Ver Movimientos
-              </q-tooltip>
-            </q-chip>
-          </div>
-        </q-expansion-item>
-
-      </q-expansion-item>
-    </q-expansion-item>
-
-    <!-- MODAL OBJETIVOS LIBRES PARA SELECCIONAR -->
-    <objetivos
-      :dialog.sync="modalObjetivos"
-      :objetivos="Objetivos"
-      @vincularObjetivo="asociarObjetivo"
-      @eliminarObjetivo="eliminarObjetivo"
-      @nuevoObjetivo="nuevoObjetivo"
-      @editarObjetivo="editarObjetivo"
+    <!-- Contenido del caso (Movimientos) -->
+    <TarjetaTribunales
+      v-for="movimiento in movimientosDelCaso(computedMovimientos)"
+      :key="movimiento.IdMovimientoCaso"
+      :movimiento="movimiento"
+      :idChat="parseInt(idChat)"
+      :datosChat="datosChat"
+      :ultimosMovimientos="ultimosMovimientos(movimiento).slice(0, 3)"
+      @mostrarObjetivos="mostrarObjetivos(movimiento)"
+      @realizarMovimiento="realizarMovimiento(movimiento, caso.IdCaso)"
+      style="margin-bottom:0.6rem;"
     />
-    <!-- MODAL PARA VER EL OBJETIVO DE UN CASO -->
-    <objetivos-movimiento
-      :dialog.sync="modalObjetivosMovimiento"
-      :objetivo="this.movimientos.filter(mov => mov.IdMovimientoCaso === this.idMovimientoSeleccionado)[0]"
-      :id="caso.IdCaso"
-      @desasociarObjetivo="desasociarObjetivo"
-    />
-    <!-- MODAL PARA CREAR NUEVO OBJETIVO -->
-    <nuevo-objetivo :dialog.sync="modalNuevoObjetivo" @agregarObjetivo="agregarObjetivo" />
-    <!-- MODAL DE EDICION DE UN OBJETIVO -->
-    <editar-objetivo :dialog.sync="modalEditar" :objetivo="objetivoEditar" @guardarObjetivo="guardarObjetivo" />
-    <!-- MODAL PARA VER MOVIMIENTOS DE UN OBJETIVO LIBRE -->
-    <q-dialog v-model="modalObjetivoLibre">
-      <MovimientosCaso
-        :IdCaso="caso.IdCaso"
-        :IdObjetivo="IdObjetivoLibre"
-        @cerrar="modalObjetivoLibre = false"
-      />
-    </q-dialog>
-    <!-- Tarjeta de caso -->
-    <q-dialog v-model="modalCaso" v-if="modalCaso">
-      <q-card>
-        <q-item style="background-color: black;">
-          <span class="q-subheading" style="color:white;">Vista previa del caso</span>
-        </q-item>
-        <TarjetaCaso v-if="modalCaso" :caso="caso" />
-        <div style="display: flex; justify-content: flex-end; margin-right: 40px">
-          <q-btn flat color="primary" label="Cerrar" @click="modalCaso = false" />
-        </div>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 

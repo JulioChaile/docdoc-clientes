@@ -29,6 +29,14 @@ const routes = [
         }
       },
       {
+        path: 'Reportar',
+        name: 'Reportar Error',
+        component: () => import('pages/Reportar.vue'),
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
         path: 'Vencimientos',
         name: 'Vencimientos',
         component: () => import('pages/Vencimientos.vue'),

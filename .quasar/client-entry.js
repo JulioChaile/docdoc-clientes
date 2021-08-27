@@ -10,11 +10,15 @@
  * Boot files are your "main.js"
  **/
 
+import 'quasar/dist/quasar.ie.polyfills.js'
+
 
 
 import '@quasar/extras/material-icons/material-icons.css'
 
 import '@quasar/extras/material-icons-round/material-icons-round.css'
+
+import '@quasar/extras/material-icons-outlined/material-icons-outlined.css'
 
 import '@quasar/extras/ionicons-v4/ionicons-v4.css'
 
@@ -48,6 +52,12 @@ import qboot_Bootaxios from 'boot/axios'
 
 
 
+Vue.config.devtools = true
+Vue.config.productionTip = false
+
+
+
+console.info('[Quasar] Running SPA.')
 
 
 
@@ -105,16 +115,11 @@ async function start () {
     
 
     
-    document.addEventListener('deviceready', () => {
-    Vue.prototype.$q.cordova = window.cordova
-    
 
     
       new Vue(app)
     
 
-    
-    }, false) // on deviceready
     
 
     
