@@ -35,7 +35,8 @@ export default (v) => {
         Muestra una alerta de "Nuevo Movimiento" de un caso, al ser tocada la notificacion redirige al caso del id que se le envio
         {
             tipo: "nuevoMovimiento",
-            id: Id del caso
+            id: Id del caso,
+            caratula: Caratula del caso
         }
         */
         nuevoMovimiento: {
@@ -47,22 +48,25 @@ export default (v) => {
                         label: 'Ver caso',
                         color: 'primary',
                         handler: () => {
-                            const idQuery = query.id ? parseInt(query.id) : 0
-                            const id = parseInt(p.id)
-            
-                            const enCaso = currentPath.includes('Caso') && id === idQuery
-
-                            if (enCaso) {
-                                v.forceRender()
-                            } else {
-                                this.tapped(p)
-                            }
+                            this.tapped(p)
                         }
                     }
                 ]
             },
             tapped(p) {
-                routerPush('Caso', { id })
+                const idActualQuery = query.id ? parseInt(query.id) : 0
+                const queryPush = {
+                    id: parseInt(p.id),
+                    caratula: p.caratula
+                }
+
+                const enCaso = currentPath.includes('Caso') && queryPush.id === idActualQuery
+
+                if (enCaso) {
+                    v.forceRender()
+                } else {
+                    routerPush('Caso', queryPush)
+                }
             },
             icon: 'work'
         }

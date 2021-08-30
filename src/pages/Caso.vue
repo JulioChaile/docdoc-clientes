@@ -32,8 +32,6 @@
 import { QTabPanels, QTabPanel, QTab, QTabs } from 'quasar'
 import Caso from '../components/Caso/Caso'
 import ArchivosCaso from '../components/Caso/ArchivosCaso'
-import DocEditor from '../components/Caso/DocEditor'
-import DatosCaso from '../components/Caso/DatosCaso'
 
 export default {
   name: 'CasoPage',
@@ -44,8 +42,6 @@ export default {
     QTabs,
     Caso,
     ArchivosCaso,
-    DocEditor,
-    DatosCaso
   },
   data () {
     return {

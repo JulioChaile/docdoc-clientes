@@ -204,7 +204,7 @@
 
     <!-- Modal Recuperar Cuenta -->
     <q-dialog v-model='recuperarModal' style="background-color: white">
-      <q-card style="min-width:400px;">
+      <q-card style="min-width:300px !important; max-width: 100% !important">
         <q-item style="background-color: black;">
             <span class="q-subheading" style="color:white;">Recuperar Cuenta</span>
         </q-item>

@@ -10,7 +10,7 @@
           aria-label="Menu"
           class="logo-menu"
         >
-          <img src="statics/img/logo.png" width="30" height="25" />
+          <img src="../statics/img/logo.png" width="30" height="25" />
         </q-btn>
 
         <q-toolbar-title>{{ $route.name }}</q-toolbar-title>
@@ -62,7 +62,7 @@
           <q-item-section>Reportar error</q-item-section>
         </q-item>
         <q-item
-          v-if="isLoggedIn"
+          v-if="$route.name !== 'Login'"
           sparse
           style="display:flex; align-items:center;position: absolute; bottom: 0; width: 100%"
           to="/Login"
@@ -96,7 +96,7 @@
 
     <!-- Modal Consulta -->
     <q-dialog v-model='consultaModal' style="background-color: white">
-      <q-card style="min-width:400px;">
+      <q-card style="min-width:300px !important; max-width: 100% !important">
         <q-item style="background-color: black;">
             <span class="text-subtitle1" style="color:white;">Consulte a DocDoc!</span>
         </q-item>
@@ -175,7 +175,6 @@ import moment from 'moment'
 import auth from '../auth'
 import request from '../request'
 import html2canvas from 'html2canvas'
-import LoadingInButton from '../components/LoadingInButton'
 import VentanaUsuario from '../components/UI/VentanaUsuario'
 import FCMPushNotifications from '../assets/FCMPushNotifications'
 
@@ -185,7 +184,6 @@ export default {
     return {
       pageKey: 0,
       leftDrawerOpen: false,
-      isLoggedIn: false,
       consultaModal: false,
       usuarioLogueado: '',
       Notificaciones: [],
@@ -207,109 +205,16 @@ export default {
     }
   },
   components: {
-    LoadingInButton,
     VentanaUsuario,
     QSpinner
   },
-  computed: {
-    notificacionesComp () {
-      if (this.notificaciones.length) {
-        return this.notificaciones
-      } else {
-        return sessionStorage.getItem(this.mostrarUsuario()) ? JSON.parse(sessionStorage.getItem(this.mostrarUsuario())) : []
-      }
-    },
-    notificacionesMediadoresComp () {
-      if (this.notificacionesMediadores.length) {
-        return this.notificacionesMediadores
-      } else {
-        return sessionStorage.getItem('msjMediador') ? JSON.parse(sessionStorage.getItem('msjMediador')) : []
-      }
-    },
-    notificacionesContactosComp () {
-      if (this.notificacionesContactos.length) {
-        return this.notificacionesContactos
-      } else {
-        return sessionStorage.getItem('msjContacto') ? JSON.parse(sessionStorage.getItem('msjContacto')) : []
-      }
-    },
-    textareaShadowText () {
-      if (this.textareaFillCancelled === true) {
-        return ''
-      }
-      const t = '',
-        empty =
-          typeof this.screenshot_descripcion !== 'string' ||
-          this.screenshot_descripcion.length === 0
-
-      if (empty === true) {
-        return t.split('\n')[0]
-      } else if (t.indexOf(this.screenshot_descripcion) !== 0) {
-        return ''
-      }
-
-      return t
-        .split(this.screenshot_descripcion)
-        .slice(1)
-        .join(this.screenshot_descripcion)
-        .split('\n')[0]
-    }
-  },
   created () {
     FCMPushNotifications(this)
-    this.isLoggedIn = auth.isLoggedIn
-    if (this.isLoggedIn) {
-      request.Get('/movimientos/movimientos-del-dia', {}, (r) => {
-        if (!r.Error) {
-          if (r.length > 1) {
-            this.verVencimientos = true
-          }
-        }
-      })
-
-      // Loop
-      if (localStorage.intervalChatGlobal) {
-        clearInterval(localStorage.intervalChatGlobal)
-      }
-      // localStorage.intervalChatGlobal = setInterval(this.buscarNotificaciones, 10000)
-    }
-    auth.addCallbackLogin(() => {
-      this.isLoggedIn = auth.isLoggedIn
-    })
-    auth.addCallbackLogin(() => {
-      if (this.isLoggedIn) {
-        request.Get('/movimientos/movimientos-del-dia', {}, (r) => {
-          if (!r.Error) {
-            if (r.length > 1) {
-              this.verVencimientos = true
-            }
-          }
-        })
-
-        // Loop
-        if (localStorage.intervalChatGlobal) {
-          clearInterval(localStorage.intervalChatGlobal)
-        }
-        // localStorage.intervalChatGlobal = setInterval(this.buscarNotificaciones, 10000)
-      }
-    })
-
-    let arrayNotificaciones = []
-    sessionStorage.setItem(this.mostrarUsuario(), JSON.stringify(arrayNotificaciones))
-
-    // setInterval(this.reactivarLoop(), 2000)
   },
   methods: {
     openURL,
     forceRender () {
       this.pageKey += 1
-    },
-    altaMovimiento () {
-      let idCaso = 0
-      if (this.$route.params && this.$route.params.idCaso) {
-        idCaso = this.$route.params.idCaso
-      }
-      this.$router.push(`/AltaMovimiento/${idCaso}`)
     },
     enviarConsulta () {
       if (!this.consulta.Apynom || !this.consulta.Texto || !this.consulta.Telefono) {
@@ -364,290 +269,6 @@ export default {
       return `${usuario.Apellidos ? usuario.Apellidos : 'sin datos'}, ${
         usuario.Nombres ? usuario.Nombres : 'sin datos'
       }`
-    },
-    cerrarScreenshotModal () {
-      this.screenshotModal = false
-      this.screenshot_titulo = ''
-      this.screenshot_descripcion = ''
-    },
-    tomarScreenshot () {
-      this.screenshotModal = true
-      html2canvas(document.getElementsByTagName('body')[0], {
-        dpi: 192,
-        x: window.scrollX,
-        y: window.scrollY
-      }).then(function (canvas) {
-        document.getElementById('screenshot_container').appendChild(canvas)
-      })
-    },
-    enviarScreenshot () {
-      if (
-        this.screenshot_titulo.length &&
-        this.screenshot_descripcion.length >= 100
-      ) {
-        const elementoCanvas = document.getElementById('screenshot_container')
-          .firstChild
-        var image = elementoCanvas.toDataURL('image/jpeg', 1.0)
-        const dataImg = {
-          title: this.screenshot_titulo,
-          desc: this.screenshot_descripcion,
-          image: image.slice(23, image.length)
-        }
-        this.loading = true
-
-        request.Post('/report', dataImg, (res) => {
-          if (!res.error) {
-            this.$q.notify({
-              color: 'primary',
-              timeout: 800,
-              message: 'Reporte enviado exitosamente!'
-            })
-            this.loading = false
-            this.screenshotModal = false
-            this.screenshot_titulo = ''
-            this.screenshot_descripcion = ''
-          } else {
-            this.$q.notify({
-              color: 'secondary',
-              timeout: 800,
-              message: res.error
-            })
-            this.screenshot_titulo = ''
-            this.screenshot_descripcion = ''
-          }
-        })
-      } else {
-        Notify.create('Por favor, complete los campos correctamente')
-      }
-    },
-    buscarNotificaciones () {
-      request.Get(`/mensajes/nuevos-mensajes`, {}, r => {
-        if (!r.Error) {
-          if (r.length) {
-            if (sessionStorage.getItem(this.mostrarUsuario())) {
-              let arrayNotificaciones = []
-              r.forEach(item => {
-                if (!this.notificacionRepetida(item, 'caso')) {
-                  arrayNotificaciones.push(item)
-                }
-              })
-              this.enviarNotificacion(arrayNotificaciones, 'caso')
-            } else {
-              this.enviarNotificacion(r, 'caso')
-            }
-          }
-        } else {
-          console.log('Error en el loop global.')
-        }
-      })
-      request.Get(`/mensajes/nuevos-mensajes`, {mediador: 'mediador'}, r => {
-        if (!r.Error) {
-          if (r.length) {
-            if (sessionStorage.getItem('msjMediador')) {
-              let arrayNotificaciones = []
-              r.forEach(item => {
-                if (!this.notificacionRepetida(item, 'mediador')) {
-                  arrayNotificaciones.push(item)
-                }
-              })
-              this.enviarNotificacion(arrayNotificaciones, 'mediador')
-            } else {
-              this.enviarNotificacion(r, 'mediador')
-            }
-          }
-        } else {
-          console.log('Error en el loop global.')
-        }
-      })
-      request.Get(`/mensajes/nuevos-mensajes`, {contacto: 'contacto'}, r => {
-        if (!r.Error) {
-          if (r.length) {
-            if (sessionStorage.getItem('msjContacto')) {
-              let arrayNotificaciones = []
-              r.forEach(item => {
-                if (!this.notificacionRepetida(item, 'contacto')) {
-                  arrayNotificaciones.push(item)
-                }
-              })
-              this.enviarNotificacion(arrayNotificaciones, 'contacto')
-            } else {
-              this.enviarNotificacion(r, 'contacto')
-            }
-          }
-        } else {
-          console.log('Error en el loop global.')
-        }
-      })
-    },
-    enviarNotificacion (mensajes, tipo) {
-      if (mensajes.length) {
-        let item = ''
-
-        switch (tipo) {
-          case 'caso':
-            item = this.mostrarUsuario()
-            break
-
-          case 'mediador':
-            item = 'msjMediador'
-            break
-
-          case 'contacto':
-            item = 'msjContacto'
-            break
-        }
-
-        let arrayNotificaciones = sessionStorage.getItem(item)
-          ? JSON.parse(sessionStorage.getItem(item))
-          : []
-
-        mensajes.forEach(mensaje => {
-          arrayNotificaciones.push(mensaje)
-        })
-        sessionStorage.setItem(item, JSON.stringify(arrayNotificaciones))
-        switch (tipo) {
-          case 'caso':
-            this.notificaciones = arrayNotificaciones
-            break
-
-          case 'mediador':
-            this.notificacionesMediadores = arrayNotificaciones
-            break
-
-          case 'contacto':
-            this.notificacionesContactos = arrayNotificaciones
-            break
-        }
-        var hash = {}
-        const notificacionesPorCaso = this.notificaciones.filter(c => {
-          var exists = !hash[c.IdChat]
-          hash[c.IdChat] = true
-          return exists
-        })
-
-        var hash2 = {}
-        const notificacionesPorMediador = this.notificacionesMediadores.filter(c => {
-          var exists = !hash2[c.IdChat]
-          hash2[c.IdChat] = true
-          return exists
-        })
-
-        var hash3 = {}
-        const notificacionesPorContacto = this.notificacionesContactos.filter(c => {
-          var exists = !hash3[c.IdChat]
-          hash3[c.IdChat] = true
-          return exists
-        })
-        this.cantidadNotificaciones = notificacionesPorCaso.length + notificacionesPorMediador.length + notificacionesPorContacto.length
-        Notify.create(`Recibiste ${mensajes.length} mensajes nuevos`)
-      }
-    },
-    notificacionRepetida (item, tipo) {
-      let result = false
-
-      let itemSession = ''
-
-      switch (tipo) {
-        case 'caso':
-          itemSession = this.mostrarUsuario()
-          break
-
-        case 'mediador':
-          itemSession = 'msjMediador'
-          break
-
-        case 'contacto':
-          itemSession = 'msjContacto'
-          break
-      }
-
-      if (sessionStorage.getItem(itemSession)) {
-        const arraySesion = JSON.parse(sessionStorage.getItem(itemSession))
-        arraySesion.forEach(mensajeSesion => {
-          if (mensajeSesion.IdMensaje === item.IdMensaje) {
-            result = true
-          }
-        })
-      }
-
-      return result
-    },
-    async confirmarNotificacion (data, tipo) {
-      const backup = await this.borrarNotificacion(data.item, tipo)
-      switch (tipo) {
-        case 'caso':
-          this.notificaciones = backup
-          sessionStorage.setItem(this.mostrarUsuario(), JSON.stringify(backup))
-          break
-
-        case 'mediador':
-          this.notificacionesMediadores = backup
-          sessionStorage.setItem('msjMediador', JSON.stringify(backup))
-          break
-
-        case 'contacto':
-          this.notificacionesContactos = backup
-          sessionStorage.setItem('msjContacto', JSON.stringify(backup))
-          break
-      }
-      var hash = {}
-      const notificacionesPorCaso = this.notificaciones.filter(c => {
-        var exists = !hash[c.IdChat]
-        hash[c.IdChat] = true
-        return exists
-      })
-
-      var hash2 = {}
-      const notificacionesPorMediador = this.notificacionesMediadores.filter(c => {
-        var exists = !hash2[c.IdChat]
-        hash2[c.IdChat] = true
-        return exists
-      })
-
-      var hash3 = {}
-      const notificacionesPorContacto = this.notificacionesContactos.filter(c => {
-        var exists = !hash3[c.IdChat]
-        hash3[c.IdChat] = true
-        return exists
-      })
-      this.cantidadNotificaciones = notificacionesPorCaso.length + notificacionesPorMediador.length + notificacionesPorContacto.length
-    },
-    borrarNotificacion (item, tipo) {
-      switch (tipo) {
-        case 'caso':
-          return this.notificaciones.filter(notificacion => notificacion.Caratula !== item.Caratula)
-
-        case 'mediador':
-          return this.notificacionesMediadores.filter(notificacion => notificacion.IdMediador !== item.IdMediador)
-
-        case 'contacto':
-          return this.notificacionesContactos.filter(notificacion => notificacion.IdContato !== item.IdContato)
-      }
-    },
-    processTextareaFill (e) {
-      if (e === void 0) {
-        return
-      }
-
-      if (e.keyCode === 27) {
-        if (this.textareaFillCancelled !== true) {
-          this.textareaFillCancelled = true
-        }
-      } else if (e.keyCode === 9) {
-        if (
-          this.textareaFillCancelled !== true &&
-          this.textareaShadowText.length > 0
-        ) {
-          // eslint-disable-next-line no-undef
-          stopAndPrevent(e)
-          this.screenshot_descripcion =
-            (typeof this.screenshot_descripcion === 'string'
-              ? this.screenshot_descripcion
-              : '') + this.textareaShadowText
-        }
-      } else if (this.textareaFillCancelled === true) {
-        this.textareaFillCancelled = false
-      }
     }
   }
 }

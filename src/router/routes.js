@@ -1,4 +1,10 @@
 
+import Index from '../pages/Index'
+import Login from '../pages/Login'
+import Consultas from '../pages/Consultas'
+import Reportar from '../pages/Reportar'
+import Caso from '../pages/Caso'
+
 const routes = [
   {
     path: '/',
@@ -7,7 +13,7 @@ const routes = [
       {
         path: '',
         name: 'Mis casos',
-        component: () => import('pages/Index.vue'),
+        component: Index,
         meta: {
           requiresAuth: true
         }
@@ -15,7 +21,7 @@ const routes = [
       {
         path: 'Login',
         name: 'Login',
-        component: () => import('pages/Login.vue'),
+        component: Login,
         meta: {
           requiresAuth: false
         }
@@ -23,7 +29,7 @@ const routes = [
       {
         path: 'Consultas',
         name: 'Mis Consultas',
-        component: () => import('pages/Consultas.vue'),
+        component: Consultas,
         meta: {
           requiresAuth: false
         }
@@ -31,172 +37,19 @@ const routes = [
       {
         path: 'Reportar',
         name: 'Reportar Error',
-        component: () => import('pages/Reportar.vue'),
+        component: Reportar,
         meta: {
           requiresAuth: false
         }
       },
       {
-        path: 'Vencimientos',
-        name: 'Vencimientos',
-        component: () => import('pages/Vencimientos.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'Tribunales',
-        name: 'Tribunales',
-        component: () => import('pages/Tribunales.vue'),
-        meta: {
-          requiresAuth: true
-        },
-        props: (route) => ({ preview: route.query.p })
-      },
-      {
-        path: 'Casos',
-        name: 'Casos',
-        component: () => import('pages/Casos.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
         path: 'Caso',
         name: 'Caso',
-        component: () => import('pages/Caso.vue'),
+        component: Caso,
         meta: {
           requiresAuth: true
         },
-        props: (route) => ({ id: route.query.id })
-      },
-      {
-        path: 'Compartidos',
-        name: 'Compartidos',
-        component: () => import('pages/Compartidos.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'Movimientos/:idCaso',
-        name: 'Movimientos',
-        component: () => import('pages/Movimientos.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'Utilidades',
-        name: 'Utilidades',
-        component: () => import('pages/Utilidades.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'AltaCaso',
-        name: 'Nuevo Caso',
-        component: () => import('pages/AltaCasos.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'GrillaCasos',
-        name: 'Grilla Casos',
-        component: () => import('pages/GrillaCasos.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'CasosPendientes',
-        name: 'Casos Pendientes',
-        component: () => import('pages/CasosPendientes.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'AltaMovimiento/:idCaso',
-        name: 'Nuevo Movimiento',
-        component: () => import('pages/AltaMovimientos.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'registrar/:token',
-        name: 'Nuevo Usuario',
-        component: () => import('pages/RegistrarUsuario.vue'),
-        props: true,
-        meta: {
-          requiresAuth: false,
-          withoutToolbar: true
-        }
-      },
-      {
-        path: '/Chat',
-        name: 'Chat',
-        component: () => import('pages/Chat.vue'),
-        props: true,
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: '/ChatNotificaciones',
-        name: 'ChatNotificaciones',
-        component: () => import('pages/ChatNotificaciones.vue'),
-        props: true,
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: '/Mediaciones',
-        name: 'Mediaciones',
-        component: () => import('pages/Mediaciones.vue'),
-        props: true,
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: '/Contactos',
-        name: 'Contactos del Estudio',
-        component: () => import('pages/ContactosEstudio.vue'),
-        props: true,
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: '/ArchivosCaso',
-        name: 'Archivos del Caso',
-        component: () => import('pages/ArchivosCaso.vue'),
-        props: true,
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: 'Calendario',
-        name: 'Calendario',
-        component: () => import('pages/Calendario.vue'),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: '/Maps',
-        name: 'Maps',
-        component: () => import('pages/Maps.vue'),
-        props: true,
-        meta: {
-          withoutToolbar: true
-        }
+        props: (route) => ({ id: route.query.id, caratula:  route.query.caratula })
       }
     ]
   }

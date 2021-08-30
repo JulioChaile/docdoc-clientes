@@ -1,7 +1,7 @@
 <template>
   <object
     type="image/svg+xml"
-    data="statics/docdoc-loading.svg"
+    data="../statics/docdoc-loading.svg"
     alt="Docdoc! Gestión"
     width="200"
     height="100"

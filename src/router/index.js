@@ -23,6 +23,17 @@ export default function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next) => {
+    if (to.path.includes('index.html')) {
+      next(!auth.isLoggedIn
+        ? {
+          path: '/Login',
+          params: { redirect: '/#' }
+        }
+        : {
+          path: '/#'
+        }
+      )  
+    }
     if (to.matched.some(record => record.meta.requiresAuth)) {
       if (!auth.isLoggedIn) {
         next({

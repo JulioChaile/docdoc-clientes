@@ -78,7 +78,7 @@
           class="col-3 text-weight-bold column text-center justify-center items-center"
         >
           <span
-          class="text-h4"
+            class="text-h4"
           >
             {{ diasRestantes(m.FechaAlta) }}
           </span>
