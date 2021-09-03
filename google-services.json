@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "432520017637",
+    "project_id": "docdoc-clientes",
+    "storage_bucket": "docdoc-clientes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432520017637:android:d84e9b00d9fe7421b3060c",
+        "android_client_info": {
+          "package_name": "com.docdoc_clientes.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "432520017637-fvkcpi6i190tuf2lfk43jnveodit2tnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqmEIv4kUm2r6sItV-15zt5YNTdU2Hw68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "432520017637-fvkcpi6i190tuf2lfk43jnveodit2tnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

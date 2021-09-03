@@ -94,4 +94,18 @@ export const postAlike = (method, url, params, callback) => {
       callback(data)
     })
     .catch(handleError(callback))
+    // Dejo esto por si otra vez se hace bosta
+    /*
+    .catch(e => {
+      Notify.create({
+        message: `<pre>${e}</pre>`,
+        html: true
+      })
+      Notify.create({
+        message: `<pre>${JSON.stringify(e)}</pre>`,
+        html: true
+      })
+      Notify.create(JSON.stringify(e))
+    })
+    */
 }

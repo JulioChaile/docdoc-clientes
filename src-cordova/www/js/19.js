@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[19],{"1d41":function(n,s,e){"use strict";e.r(s);var o=function(){var n=this,s=n.$createElement,e=n._self._c||s;return e("ArchivosCaso")},a=[],t=e("351e"),c={name:"ArchivosCasoVista",components:{ArchivosCaso:t["a"]}},r=c,i=e("2877"),l=Object(i["a"])(r,o,a,!1,null,null,null);s["default"]=l.exports}}]);

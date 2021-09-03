@@ -96,7 +96,7 @@
 
     <!-- Modal Consulta -->
     <q-dialog v-model='consultaModal' style="background-color: white">
-      <q-card style="min-width:300px !important; max-width: 100% !important">
+      <q-card>
         <q-item style="background-color: black;">
             <span class="text-subtitle1" style="color:white;">Consulte a DocDoc!</span>
         </q-item>

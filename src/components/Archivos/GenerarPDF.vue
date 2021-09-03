@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 100%; max-width: 1000px !important">
+  <q-card>
     <q-item style="background-color: black;">
       <span class="q-subheading" style="color:white;">Generar PDF</span>
     </q-item>

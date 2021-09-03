@@ -1,5 +1,5 @@
 <template>
-  <q-card style="background-color: white; max-width: 2600px !important; position: relative">
+  <q-card style="background-color: white; position: relative">
     <span class="btn_salir" @click="$emit('cerrar')">
       <q-tooltip>Salir</q-tooltip>
       X

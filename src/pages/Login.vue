@@ -204,14 +204,13 @@
 
     <!-- Modal Recuperar Cuenta -->
     <q-dialog v-model='recuperarModal' style="background-color: white">
-      <q-card style="min-width:300px !important; max-width: 100% !important">
+      <q-card>
         <q-item style="background-color: black;">
             <span class="q-subheading" style="color:white;">Recuperar Cuenta</span>
         </q-item>
-        <div style="margin-top: 20px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; display: flex; justify-content: center;">
-          Ingrese el email con el que fue registrado y su nueva contraseña.
-          <br>
-          Se le enviara un mail con su nombre de usuario y su nueva contraseña.
+        <div class="column" style="margin-top: 20px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; display: flex; justify-content: center;">
+          <span>Ingrese el email con el que fue registrado y su <b>nueva</b> contraseña.</span>
+          <span>Se le enviara un mail con su nombre de usuario y su nueva contraseña.</span>
         </div>
         <q-input
           v-model="email"
@@ -221,7 +220,7 @@
         />
         <q-input
           v-model="pass"
-          label="Contraseña"
+          label="Nueva Contraseña"
           style="padding: 0 1rem 1rem 1rem;"
           type="password"
         />
@@ -241,7 +240,7 @@
 
     <!-- Modal Registro -->
     <q-dialog v-model='registroModal' style="background-color: white">
-      <q-card style="min-width:400px;">
+      <q-card style="min-width:330px;">
         <q-item style="background-color: black;">
             <span class="text-subtitle1" style="color:white;">Registrarse</span>
         </q-item>
@@ -472,10 +471,6 @@ export default {
       if (!path || path.includes('Login')) {
         path = '/'
       }
-      if (typeof auth.UsuarioLogueado.IdRol !== 'undefined') {
-        console.log('cadete')
-        path = '/Maps'
-      }
       this.$router.push({ path: path })
     },
     async getToken() {
@@ -484,8 +479,6 @@ export default {
       request.Post('/usuarios/set-token-app-cliente', {TokenApp: token}, r => {
         if (r.Error) {
           this.$q.notify(r.Error)
-        } else {
-          this.$q.notify('Token guardado')
         }
       })
     },
@@ -618,7 +611,11 @@ export default {
           this.$q.notify(r.Error)
         } else {
           this.$q.notify('Su cuenta se creo con exito, ya puede loguearse en DocDoc! Clientes')
-          this.cancelarRegistro()
+          auth.login(this.userRegistro, () => {
+            this.cancelarRegistro()
+            this.getToken()
+            this.redirect()
+          })
         }
       })
     },

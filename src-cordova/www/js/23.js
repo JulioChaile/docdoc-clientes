@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[23],{"1c89":function(e,n,a){"use strict";a.r(n);var l=function(){var e=this,n=e.$createElement,a=e._self._c||n;return a("GrillaCasos")},s=[],o=a("e209"),t={name:"GrillaCasosHome",components:{GrillaCasos:o["a"]}},r=t,c=a("2877"),i=Object(c["a"])(r,l,s,!1,null,null,null);n["default"]=i.exports}}]);

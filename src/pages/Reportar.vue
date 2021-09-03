@@ -93,12 +93,12 @@ export default {
     },
     methods: {
         enviarReporte () {
-            this.enviando = true
-
             if (!this.reporte) {
                 this.$q.notify('No puede enviar un reporte vacio')
                 return
             }
+
+            this.enviando = true
 
             request.Post('/usuarios/reporte-cliente', {reporte: this.reporte}, r => {
                 if (r.Error) {
