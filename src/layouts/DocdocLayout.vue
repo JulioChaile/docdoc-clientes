@@ -49,6 +49,12 @@
           </q-item-section>
           <q-item-section>Mis Casos</q-item-section>
         </q-item>
+        <q-item to="/Audiencias" style="display:flex; align-items:center;">
+          <q-item-section side top>
+            <q-icon name="event" />
+          </q-item-section>
+          <q-item-section>Mis Audiencias</q-item-section>
+        </q-item>
         <q-item to="/Consultas" style="display:flex; align-items:center;">
           <q-item-section side top>
             <q-icon name="question_answer" />

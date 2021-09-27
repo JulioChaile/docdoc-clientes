@@ -1,6 +1,7 @@
 
 import Index from '../pages/Index'
 import Login from '../pages/Login'
+import Audiencias from '../pages/Audiencias'
 import Consultas from '../pages/Consultas'
 import Reportar from '../pages/Reportar'
 import Caso from '../pages/Caso'
@@ -30,6 +31,14 @@ const routes = [
         path: 'Consultas',
         name: 'Mis Consultas',
         component: Consultas,
+        meta: {
+          requiresAuth: false
+        }
+      },
+      {
+        path: 'Audiencias',
+        name: 'Mis Audiencias',
+        component: Audiencias,
         meta: {
           requiresAuth: false
         }
