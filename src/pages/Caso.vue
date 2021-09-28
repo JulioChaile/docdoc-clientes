@@ -21,7 +21,7 @@
       <q-tab-panel class="padding-cero" name="caso">
         <Caso />
       </q-tab-panel>
-      <q-tab-panel class="padding-top-cero" name="archivos">
+      <q-tab-panel class="q-pa-none" name="archivos">
         <ArchivosCaso />
       </q-tab-panel>
     </q-tab-panels>
