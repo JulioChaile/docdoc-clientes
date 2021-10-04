@@ -254,6 +254,7 @@ export default {
     QTab,
     QTabs
   },
+  props: ['casoAbierto'],
   data () {
     return {
       id: 0,
@@ -276,11 +277,7 @@ export default {
     }
   },
   created () {
-    if (!this.$route.query.id) {
-      this.$router.push('GrillaCasos')
-      return
-    }
-    this.id = this.$route.query.id
+    this.id = this.casoAbierto.IdCaso
 
     request.Get('/casos/listar-carpetas', {IdCaso: this.id}, r => {
       if (r.Error) {
@@ -484,7 +481,7 @@ export default {
   }
 
   .panel-archivos {
-    height: 88vh !important;;
+    height: calc(100vh - 112px) !important;;
     overflow: scroll;
   }
 

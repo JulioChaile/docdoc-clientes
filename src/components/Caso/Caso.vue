@@ -53,14 +53,70 @@
         Pronto tendremos novedades
       </div>
     </div>
-    <div
+
+    <q-carousel
       v-else
+      v-model="slide"
+      swipeable
+      animated
+      vertical
+      arrows
+      control-color="primary"
+      height="55vh"
+      class="bg-transparent rounded-borders full-width"
+    >
+      <q-carousel-slide
+        v-for="(m, i) in movimientos"
+        :key="m.IdMovimientoCaso"
+        :name="m.IdMovimientoCaso"
+        class="column text-weight-medium no-wrap flex-center"
+      >
+        <div
+          :class="`full-width q-px-md column justify-center ${classNov(i)}`"
+          style="height: 85%; border-radius: 5%"
+          @click="verNovedad(m)"
+        >
+          <div class="text-h6 text-center">
+            {{ m.FechaAlta.split(' ')[0].split('-').reverse().join('/') }}
+          </div>
+
+          <q-separator class="q-my-sm" />
+
+          <div class="text-weight-medium q-my-sm" style="overflow: hidden; height: 60%">
+            {{ m.Detalle }}
+          </div>
+
+          <q-separator class="q-my-sm" />
+
+          <div
+            v-if="diasRestantes(m.FechaAlta)"
+            class="text-weight-bold text-center justify-center items-center"
+          >
+            Hace 
+            <span
+              class="text-bold"
+            >
+              {{ diasRestantes(m.FechaAlta) }}
+            </span>
+            {{ 'Día' + (diasRestantes(m.FechaAlta) === 1 ? '' : 's') }}
+          </div>
+          <div
+            v-else
+            class="text-weight-bold text-center text-h6 justify-center items-center"
+          >
+            Hoy
+          </div>
+        </div>
+      </q-carousel-slide>
+    </q-carousel>
+
+    <!--div
       class="full-width q-pb-sm"
     >
       <div
         v-for="(m, i) in movimientos"
         :key="m.IdMovimientoCaso"
-        :class="`bg-white novedad-container q-py-sm q-px-md row full-width q-mt-lg ${classNov(i)}`"
+        :class="`novedad-container q-py-sm q-px-md row full-width q-mt-lg ${classNov(i)}`"
         @click="verNovedad(m)"
         rounded
       >
@@ -91,7 +147,7 @@
           Hoy
         </div>
       </div>
-    </div>
+    </div-->
 
     <!-- Modal Novedad -->
     <q-dialog v-model="modalNov">
@@ -110,6 +166,7 @@
 </template>
 
 <script>
+import { QCarousel, QCarouselSlide, QCarouselControl } from 'quasar'
 import request from '../../request'
 import DataItem from '../Compartidos/DataItem'
 import Personas from '../../components/Caso/Personas'
@@ -121,8 +178,12 @@ export default {
   components: {
     Personas,
     DataItem,
-    Loading
+    Loading,
+    QCarousel,
+    QCarouselSlide,
+    QCarouselControl
   },
+  props: ['casoAbierto'],
   data () {
     return {
       id: 0,
@@ -133,22 +194,20 @@ export default {
       movAux: {
         FechaAlta: '',
         Detalle: ''
-      }
+      },
+      slide: 0
     }
   },
   created () {
-    if (!this.$route.query.id) {
-      this.$router.push('GrillaCasos')
-      return
-    }
-    this.id = this.$route.query.id
-    this.caratula = this.$route.query.caratula
+    this.id = this.casoAbierto.IdCaso
+    this.caratula = this.casoAbierto.Caratula
 
     request.Get(`/casos/${this.id}/movimientos-clientes`, {}, r => {
       if (r.Error) {
         this.$q.notify('Ocurrio un error al traer las novedades')
       } else {
         this.movimientos = r.reverse()
+        if (r.length) this.slide = this.movimientos[0].IdMovimientoCaso
         this.loading = false
       }
     })
@@ -213,7 +272,19 @@ export default {
     classNov (i) {
       const c = parseInt(i) % 4 + 1
 
-      return `logo-${c}`
+      switch (c) {
+        case 1:
+          return 'bg-negative'
+          
+        case 2:
+          return 'bg-primary'
+          
+        case 3:
+          return 'bg-positive'
+          
+        case 4:
+          return 'bg-warning'
+      }
     },
     diasRestantes (fecha) {
       fecha = fecha.split(' ')[0]
