@@ -126,7 +126,9 @@ export default {
     }
   },
   created () {
-    this.$router.push({
+    const mode = this.$route.query.mode
+
+    if (mode !== 'notificacion') this.$router.push({
         query: {
           ...this.$route.query,
           tab: this.tab
@@ -179,7 +181,24 @@ export default {
           : []
         })
 
-        this.casoAbierto = this.casos[0]
+        if (mode === 'notificacion') {
+          const id = this.$route.query.id
+          const tab = this.$route.query.tab
+          
+          const i = this.casos.findIndex(c => parseInt(c.IdCaso) === parseInt(id))
+
+          this.casoAbierto = this.casos[i]
+
+          this.$nextTick(() => {
+            document.getElementById(this.casoAbierto.IdCaso + 'caso').scrollIntoView(true)
+
+            setTimeout(() => {
+              this.tab = tab
+            }, 600);
+          })
+        } else {
+          this.casoAbierto = this.casos[0]
+        }
 
         this.loadingCasos = false
       }
