@@ -13,11 +13,12 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Mis casos',
+        name: 'Mis Casos',
         component: Index,
         meta: {
           requiresAuth: true
-        }
+        },
+        props: (route) => ({ tab: route.query.tab })
       },
       {
         path: 'Login',

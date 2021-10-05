@@ -35,7 +35,7 @@
         />
       </q-tab-panel>
       <q-tab-panel name="documentacion" class="q-pa-none">
-        <Caso 
+        <Documentacion 
           :casoAbierto="casoAbierto"
         />
       </q-tab-panel>
@@ -100,6 +100,7 @@ import GrillaCasos from '../components/GrillaCasos'
 import Caso from '../components/Caso/Caso'
 import ArchivosCaso from '../components/Caso/ArchivosCaso'
 import Audiencias from '../components/Caso/Audiencias'
+import Documentacion from '../components/Caso/Documentacion'
 
 export default {
   name: 'PageIndex',
@@ -111,7 +112,8 @@ export default {
     GrillaCasos,
     Caso,
     ArchivosCaso,
-    Audiencias
+    Audiencias,
+    Documentacion
   },
   data () {
     return {
@@ -124,6 +126,13 @@ export default {
     }
   },
   created () {
+    this.$router.push({
+        query: {
+          ...this.$route.query,
+          tab: this.tab
+        }
+      })
+
     const cadena = auth.UsuarioLogueado.Usuario
     
     request.Get('/casos/buscar-cliente', {Cadena: cadena}, (r) => {
@@ -131,6 +140,7 @@ export default {
         this.casos = r
 
         this.casos.forEach(c => {
+          c.Actores = []
           c.Demandados = []
 
           c.PersonasCaso.forEach(p => {
@@ -145,6 +155,14 @@ export default {
               } else {
                 c.Demandados.push(p.Nombres)
               }
+            } else {
+              c.Actores.push({
+                IdPersona: p.IdPersona,
+                Persona: p.Apellidos
+                  ? p.Apellidos + ', ' + p.Nombres
+                  : p.Nombres,
+                DocumentacionSolicitada: p.DocumentacionSolicitada || []
+              })
             }
           })
 
@@ -183,6 +201,13 @@ export default {
           document.getElementById(this.casoAbierto.IdCaso + 'caso').scrollIntoView(true)
         })
       }
+
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          tab: this.tab
+        }
+      })
     }
   },
   computed: {

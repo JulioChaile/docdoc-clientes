@@ -13,7 +13,7 @@
           <img src="../statics/img/logo.png" width="30" height="25" />
         </q-btn>
 
-        <q-toolbar-title>{{ $route.name }}</q-toolbar-title>
+        <q-toolbar-title>{{ headerNombre() }}</q-toolbar-title>
         
         <!--div>
           <q-btn-dropdown
@@ -49,12 +49,12 @@
           </q-item-section>
           <q-item-section>Mis Casos</q-item-section>
         </q-item>
-        <q-item to="/Audiencias" style="display:flex; align-items:center;">
+        <!--q-item to="/Audiencias" style="display:flex; align-items:center;">
           <q-item-section side top>
             <q-icon name="event" />
           </q-item-section>
           <q-item-section>Mis Audiencias</q-item-section>
-        </q-item>
+        </q-item-->
         <q-item to="/Consultas" style="display:flex; align-items:center;">
           <q-item-section side top>
             <q-icon name="question_answer" />
@@ -275,6 +275,33 @@ export default {
       return `${usuario.Apellidos ? usuario.Apellidos : 'sin datos'}, ${
         usuario.Nombres ? usuario.Nombres : 'sin datos'
       }`
+    },
+    headerNombre () {
+      if (this.$route.name === 'Mis Casos') {
+        const tab = this.$route.query.tab
+
+        switch (tab) {
+          case 'casos':
+            return 'Mis Casos'
+
+          case 'novedades':
+            return 'Novedades del Caso'
+
+          case 'audiencias':
+            return 'Proximas Audiencias'
+
+          case 'archivos':
+            return 'Archivos del Caso'
+
+          case 'documentacion':
+            return 'Documentación Requerida'
+
+          case 'personas':
+            return 'Personas del Caso'
+        }
+      } else {
+        return this.$route.name
+      }
     }
   }
 }
