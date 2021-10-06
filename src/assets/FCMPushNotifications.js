@@ -35,8 +35,7 @@ export default (v) => {
         Muestra una alerta de "Nuevo Movimiento" de un caso, al ser tocada la notificacion redirige al caso del id que se le envio
         {
             tipo: "nuevoMovimiento",
-            id: Id del caso,
-            caratula: Caratula del caso
+            id: Id del caso
         }
         */
         nuevoMovimiento: {
@@ -54,21 +53,81 @@ export default (v) => {
                 ]
             },
             tapped(p) {
-                const idActualQuery = query.id ? parseInt(query.id) : 0
                 const queryPush = {
                     id: parseInt(p.id),
-                    caratula: p.caratula
+                    tab: 'novedades',
+                    mode: 'notificacion'
                 }
 
-                const enCaso = currentPath.includes('Caso') && queryPush.id === idActualQuery
+                v.forceRender()
 
-                if (enCaso) {
-                    v.forceRender()
-                } else {
-                    routerPush('Caso', queryPush)
-                }
+                routerPush('', queryPush)
             },
             icon: 'work'
+        },
+        
+        /*
+        Muestra una alerta de "Documentacion" de un caso, al ser tocada la notificacion redirige al caso del id que se le envio
+        {
+            tipo: "documentacion",
+            id: Id del caso,
+        }
+        */
+        documentacion: {
+            accion: true,
+            noti() { return true },
+            botones(p) {
+                return [
+                    {
+                        label: 'Ver documentacion',
+                        color: 'primary',
+                        handler: () => {
+                            this.tapped(p)
+                        }
+                    }
+                ]
+            },
+            tapped(p) {
+                const queryPush = {
+                    id: parseInt(p.id),
+                    tab: 'documentacion',
+                    mode: 'notificacion'
+                }
+
+                v.forceRender()
+
+                routerPush('', queryPush)
+            },
+            icon: 'inventory'
+        },
+
+        
+        audiencia: {
+            accion: true,
+            noti() { return true },
+            botones(p) {
+                return [
+                    {
+                        label: 'Ver audienciass',
+                        color: 'primary',
+                        handler: () => {
+                            this.tapped(p)
+                        }
+                    }
+                ]
+            },
+            tapped(p) {
+                const queryPush = {
+                    id: parseInt(p.id),
+                    tab: 'audiencia',
+                    mode: 'notificacion'
+                }
+
+                v.forceRender()
+
+                routerPush('', queryPush)
+            },
+            icon: 'inventory'
         }
     }
 
