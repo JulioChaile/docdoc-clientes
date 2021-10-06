@@ -40,7 +40,7 @@
         />
       </q-tab-panel>
       <q-tab-panel name="personas" class="q-pa-none">
-        <Caso 
+        <Personas 
           :casoAbierto="casoAbierto"
         />
       </q-tab-panel>
@@ -101,6 +101,7 @@ import Caso from '../components/Caso/Caso'
 import ArchivosCaso from '../components/Caso/ArchivosCaso'
 import Audiencias from '../components/Caso/Audiencias'
 import Documentacion from '../components/Caso/Documentacion'
+import Personas from '../components/Caso/Personas'
 
 export default {
   name: 'PageIndex',
@@ -113,7 +114,8 @@ export default {
     Caso,
     ArchivosCaso,
     Audiencias,
-    Documentacion
+    Documentacion,
+    Personas
   },
   data () {
     return {
@@ -216,7 +218,7 @@ export default {
 
       const idCaso = parseInt(this.casoAbierto.IdCaso)
 
-      return this.movimientos.filter(m => parseInt(m.IdMovimientoCaso) === idCaso)
+      return this.movimientos.filter(m => parseInt(m.IdCaso) === idCaso)
     }
   },
   methods: {
