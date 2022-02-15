@@ -1,7 +1,14 @@
 <template>
     <div>
-        <div v-if="loading">
-            <Loading />
+        <div
+            v-if="loading"
+            class="full-width flex justify-center q-my-md"
+        >
+            <q-spinner
+                color="teal"
+                class="self-center"
+                size="2em"
+            />
         </div>
 
         <div v-else>
@@ -70,13 +77,13 @@
 </template>
 
 <script>
+import { QSpinner } from 'quasar'
 import moment from 'moment'
-import Loading from '../../components/Loading'
 
 export default {
     name: 'Audiencias',
     components: {
-        Loading
+        QSpinner
     },
     props: ['movimientos', 'loading'],
     data () {

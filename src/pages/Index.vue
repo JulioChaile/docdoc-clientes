@@ -183,13 +183,15 @@ export default {
           : []
         })
 
-        if (mode === 'notificacion') {
+        if (mode === 'notificacion' || mode === 'back') {
           const id = this.$route.query.id
           const tab = this.$route.query.tab
           
           const i = this.casos.findIndex(c => parseInt(c.IdCaso) === parseInt(id))
 
-          this.casoAbierto = this.casos[i]
+          i > -1
+            ? this.casoAbierto = this.casos[i]
+            : this.casoAbierto = this.casos[0]
 
           this.$nextTick(() => {
             document.getElementById(this.casoAbierto.IdCaso + 'caso').scrollIntoView(true)
@@ -206,14 +208,7 @@ export default {
       }
     })
 
-    request.Get('/casos/eventos-clientes', { usuario: cadena }, r => {
-      if (r.Error) {
-        this.$q.notify('Hubo un error en el servidor, por favor notifiquelo y vuelva a intentarlo mas tarde.')
-      } else {
-        this.loadingAudiencias = false
-        this.movimientos = r
-      }
-    })
+    this.buscarAudiencias()
   },
   watch: {
     tab () {
@@ -221,6 +216,11 @@ export default {
         this.$nextTick(() => {
           document.getElementById(this.casoAbierto.IdCaso + 'caso').scrollIntoView(true)
         })
+      }
+
+      if (this.tab === 'audiencias') {
+        this.loadingAudiencias = true
+        this.buscarAudiencias()
       }
 
       this.$router.push({
@@ -243,10 +243,29 @@ export default {
   methods: {
     abrirCaso (c) {
       this.casoAbierto = c
+
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          id: c.IdCaso
+        }
+      })
       
       setTimeout(() => {
         this.tab = 'novedades'
       }, 150);
+    },
+    buscarAudiencias () {
+      const usuario = auth.UsuarioLogueado.Usuario
+
+      request.Get('/casos/eventos-clientes', { usuario: usuario }, r => {
+        if (r.Error) {
+          this.$q.notify('Hubo un error en el servidor, por favor notifiquelo y vuelva a intentarlo mas tarde.')
+        } else {
+          this.loadingAudiencias = false
+          this.movimientos = r
+        }
+      })
     }
   }
 }

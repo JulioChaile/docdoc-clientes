@@ -319,7 +319,7 @@
 
     <!-- Modal Consulta -->
     <q-dialog v-model='consultaModal' style="background-color: white">
-      <q-card style="min-width:400px;">
+      <q-card style="min-width:300px;">
         <q-item style="background-color: black;">
             <span class="text-subtitle1" style="color:white;">Consulte a DocDoc!</span>
         </q-item>
@@ -639,6 +639,11 @@ export default {
 
       this.loading = true
 
+      setTimeout(() => {
+        this.consultaModal = false
+        this.$q.notify('Se estan cargando los datos de su consulta al servidor')
+      }, 1000);
+
       request.Post('/consultas', this.consulta, r => {
         if (r.Error) {
           this.$q.notify('Hubo un error en el servidor, por favor intentelo de nuevo mas tarde.')
@@ -661,8 +666,7 @@ export default {
 
           this.$q.notify('Su consulta fue enviada con exito, en breve un abogado de nuestros estudios se comunicara con usted')
         }
-
-        this.consultaModal = false
+        
         this.loading = false
       })
     },

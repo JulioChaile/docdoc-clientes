@@ -119,7 +119,7 @@ export default (v) => {
             tapped(p) {
                 const queryPush = {
                     id: parseInt(p.id),
-                    tab: 'audiencia',
+                    tab: 'audiencias',
                     mode: 'notificacion'
                 }
 
@@ -127,7 +127,7 @@ export default (v) => {
 
                 routerPush('', queryPush)
             },
-            icon: 'inventory'
+            icon: 'event'
         }
     }
 

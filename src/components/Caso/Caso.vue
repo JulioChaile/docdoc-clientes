@@ -69,7 +69,7 @@
         v-for="(m, i) in movimientos"
         :key="m.IdMovimientoCaso"
         :name="m.IdMovimientoCaso"
-        class="column text-weight-medium no-wrap flex-center"
+        :class="`column text-weight-medium no-wrap flex-center ${classNov(i) === 'bg-negative' ? 'text-white' : ''}`"
       >
         <div
           :class="`full-width q-px-md column justify-center ${classNov(i)}`"

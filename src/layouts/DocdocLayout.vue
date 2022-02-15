@@ -67,6 +67,12 @@
           </q-item-section>
           <q-item-section>Reportar error</q-item-section>
         </q-item>
+        <q-item clickable @click="compartirApp" style="display:flex; align-items:center;">
+          <q-item-section side top>
+            <q-icon name="share" />
+          </q-item-section>
+          <q-item-section>Compartir App</q-item-section>
+        </q-item>
         <q-item
           v-if="$route.name !== 'Login'"
           sparse
@@ -217,6 +223,23 @@ export default {
   created () {
     FCMPushNotifications(this)
   },
+  mounted () {
+    document.addEventListener("backbutton", () => {
+      this.forceRender()
+
+      this.$router.push({
+        name: '',
+        query: {
+          id: this.$route.query.id || 0,
+          tab: 'casos',
+          mode: 'back'
+        }
+      })
+    }, false)
+  },
+  beforeDestroy () {
+    document.removeEventListener("backbutton", () => {});
+  },
   methods: {
     openURL,
     forceRender () {
@@ -229,6 +252,11 @@ export default {
       }
 
       this.loading = true
+
+      setTimeout(() => {
+        this.consultaModal = false
+        this.$q.notify('Se estan cargando los datos de su consulta al servidor')
+      }, 1000);
 
       request.Post('/consultas', this.consulta, r => {
         if (r.Error) {
@@ -257,7 +285,6 @@ export default {
           })
         }
 
-        this.consultaModal = false
         this.loading = false
       })
     },
@@ -302,6 +329,19 @@ export default {
       } else {
         return this.$route.name
       }
+    },
+    compartirApp () {
+      window.plugins.socialsharing.shareViaWhatsApp(
+        '¡Prueba la nueva app DocDoc! Clientes y obten asesoramiento legal al instante!',
+        null,
+        'https://play.google.com/store/apps/details?id=com.docdoc_clientes.app',
+        function () {
+          console.log('share ok')
+        },
+        function (errormsg) {
+          alert(errormsg)
+        }
+      )
     }
   }
 }
