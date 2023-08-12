@@ -65,6 +65,33 @@ export default (v) => {
             },
             icon: 'work'
         },
+        nuevoMensaje: {
+            accion: true,
+            noti() { return true },
+            botones(p) {
+                return [
+                    {
+                        label: 'Ver Chat',
+                        color: 'primary',
+                        handler: () => {
+                            this.tapped(p)
+                        }
+                    }
+                ]
+            },
+            tapped(p) {
+                const queryPush = {
+                    id: parseInt(p.id),
+                    tab: 'chat',
+                    mode: 'notificacion'
+                }
+
+                v.forceRender()
+
+                routerPush('', queryPush)
+            },
+            icon: 'chat'
+        },
         
         /*
         Muestra una alerta de "Documentacion" de un caso, al ser tocada la notificacion redirige al caso del id que se le envio

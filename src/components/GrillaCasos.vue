@@ -1,11 +1,23 @@
 <template>
-  <div class="bg-transparent">
+  <div class="bg-transparent" style="position: relative">
     <div
       v-if="loading"
     >
       <Loading />
     </div>
-    <div v-else>
+    <div v-else :key="keyContainer">
+      <!--q-btn
+        class="fixed-bottom bg-white q-mx-auto text-positive"
+        style="z-index: 1000; width: 80px; height: 80px; opacity: .9; font-size: 22px; bottom: 70px"
+        round
+        icon="chat"
+        @click="$emit('abrirChat', casoAbierto)"
+      >
+        <q-badge v-if="casoAbierto.mensajesNuevos" style="border-radius: 1em;padding: 7px;z-index: 5000" floating color="red" rounded>
+          {{ casoAbierto.mensajesNuevos }}
+        </q-badge>
+      </q-btn-->
+
       <div
         v-if="casos.length === 0"
         class="column full-width items-center justify-center text-center"
@@ -25,11 +37,14 @@
       </div>
       <div
         v-for="c in casos"
-        :key="c.IdCaso"
+        :key="c.IdCaso + c.mensajesNuevos"
         :id="c.IdCaso + 'caso'"
         :class="`row contenedor_caso ${casoAbierto.IdCaso === c.IdCaso ? 'caso_abierto' : ''}`"
         @click="$emit('abrirCaso', c)"
       >
+        <q-badge v-if="c.mensajesNuevos" class="q-mt-sm q-mr-sm" color="red" floating transparent>
+          {{ c.mensajesNuevos }}
+        </q-badge>
         <div class="col-11 column q-py-sm q-px-md">
           <div class="caratula_caso q-mb-sm">
             {{ c.Demandados.length ? c.Demandados.join(' - ') : c.Caratula }}
@@ -52,13 +67,77 @@
 </template>
 
 <script>
+import request from '../request'
 import Loading from '../components/Loading'
+import { Notify } from 'quasar'
 export default {
   components: {
     Loading
   },
   name: 'GrillaCasos',
-  props: [ 'casos', 'loading', 'casoAbierto']
+  props: [ 'casos', 'loading', 'casoAbierto'],
+  data() {
+    return {
+      mensajesSinLeer: [],
+      keyContainer: 1
+    }
+  },
+  watch: {
+    loading () {
+      if (!this.loading) {
+        this.buscarMensajes()
+        
+        if (sessionStorage.intervalBuscarMensajes) {
+          clearInterval(sessionStorage.intervalBuscarMensajes)
+        }
+        sessionStorage.intervalBuscarMensajes = setInterval(this.buscarMensajes, 30000)
+      }
+    }
+  },
+  mounted () {
+    if (!this.loading) {
+      this.buscarMensajes()
+      
+      if (sessionStorage.intervalBuscarMensajes) {
+        clearInterval(sessionStorage.intervalBuscarMensajes)
+      }
+      sessionStorage.intervalBuscarMensajes = setInterval(this.buscarMensajes, 30000)
+    }
+  },
+  methods: {
+    buscarMensajes () {
+      request.Get(`/mensajes-interno/nuevos-mensajes`, { IdCaso: 0, Cliente: 'N' }, r => {
+        this.loading = false
+        if (!r.Error) {
+          if (r.length) {
+            let mensajesSession = sessionStorage.getItem('msjInterno') ? JSON.parse(sessionStorage.getItem('msjInterno')) : []
+            const ids = mensajesSession.map(m => parseInt(m.IdMensajeChatInterno))
+            console.log({ids})
+
+            const mensajesNuevos = r.filter(m => !ids.includes(parseInt(m.IdMensajeChatInterno)))
+
+            mensajesSession = mensajesSession.concat(mensajesNuevos)
+
+            this.casos.forEach(c => {
+              const i = mensajesNuevos.filter(m => parseInt(m.IdCaso) === parseInt(c.IdCaso)).length
+
+              c.mensajesNuevos = c.mensajesNuevos ? c.mensajesNuevos + i : i
+            })
+
+            sessionStorage.setItem('msjInterno', JSON.stringify(mensajesSession))
+
+            if (mensajesNuevos.length > 0) {
+              Notify.create(`Tienes ${mensajesNuevos.length} mensajes nuevos`)
+              this.keyContainer++
+            }
+          }
+        } else {
+          console.log('Error en el loop.')
+          console.log(r)
+        }
+      })
+    }
+  }
 }
 </script>
 

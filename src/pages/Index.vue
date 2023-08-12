@@ -16,11 +16,13 @@
           :casoAbierto="casoAbierto"
           :loading="loadingCasos"
           @abrirCaso="abrirCaso"
+          @abrirChat="abrirChat"
         />
       </q-tab-panel>
       <q-tab-panel name="novedades" class="q-pa-none">
         <Caso 
           :casoAbierto="casoAbierto"
+          @abrirChat="abrirChat"
         />
       </q-tab-panel>
       <q-tab-panel name="audiencias" class="q-pa-none">
@@ -44,48 +46,63 @@
           :casoAbierto="casoAbierto"
         />
       </q-tab-panel>
+      <q-tab-panel name="chat" class="q-pa-none">
+        <ChatCaso 
+          :id="casoAbierto.IdCaso"
+          :casoAbierto="casoAbierto"
+        />
+      </q-tab-panel>
     </q-tab-panels>
 
-    <q-tabs
-      v-if="casos.length"
-      v-model="tab"
-      dense
-      no-caps
-      align="justify"
-      class="text-grey-7 fixed-bottom bg-grey-3 tabs-index"
-      active-color="dark"
-    >
-      <q-tab
-        name="casos" 
-        label="Casos"
-        icon="home"
-      />
-      <q-tab
-        name="novedades"
-        label="Novedades"
-        icon="feedback"
-      />
-      <q-tab
-        name="audiencias"
-        label="Audiencias"
-        icon="event"
-      />
-      <q-tab
-        name="archivos"
-        label="Archivos"
-        icon="perm_media"
-      />
-      <q-tab
-        name="documentacion"
-        label="Documentación"
-        icon="cloud_upload"
-      />
-      <q-tab
-        name="personas"
-        label="Personas"
-        icon="group"
-      />
-    </q-tabs>
+    <div v-if="casos.length" class="fixed-bottom">
+      <div
+        class="bg-teal text-center text-white flex align-center justify-center text-h5"
+        style="height: 50px; align-items: center;"
+        @click="abrirChat(casoAbierto)"
+      >
+        Chatea con Nosotros
+      </div>
+
+      <q-tabs
+        v-model="tab"
+        dense
+        no-caps
+        align="justify"
+        class="text-grey-7 bg-grey-3 tabs-index"
+        active-color="dark"
+      >
+        <q-tab
+          name="casos" 
+          label="Casos"
+          icon="home"
+        />
+        <q-tab
+          name="novedades"
+          label="Novedades"
+          icon="feedback"
+        />
+        <q-tab
+          name="audiencias"
+          label="Audiencias"
+          icon="event"
+        />
+        <q-tab
+          name="archivos"
+          label="Archivos"
+          icon="perm_media"
+        />
+        <q-tab
+          name="documentacion"
+          label="Documentación"
+          icon="cloud_upload"
+        />
+        <q-tab
+          name="personas"
+          label="Personas"
+          icon="group"
+        />
+      </q-tabs>
+    </div>
   </q-page>
 </template>
 
@@ -102,6 +119,7 @@ import ArchivosCaso from '../components/Caso/ArchivosCaso'
 import Audiencias from '../components/Caso/Audiencias'
 import Documentacion from '../components/Caso/Documentacion'
 import Personas from '../components/Caso/Personas'
+import ChatCaso from '../components/Caso/ChatCaso'
 
 export default {
   name: 'PageIndex',
@@ -115,7 +133,8 @@ export default {
     ArchivosCaso,
     Audiencias,
     Documentacion,
-    Personas
+    Personas,
+    ChatCaso
   },
   data () {
     return {
@@ -147,8 +166,14 @@ export default {
           c.Actores = []
           c.Demandados = []
 
+          const pc = []
+
           c.PersonasCaso.forEach(p => {
-            if (p.Observaciones === 'Demandado') {
+            const i = c.Actores.findIndex(a => a.IdPersona === p.IdPersona)
+
+            if (i !== -1) {
+              return
+            } else if (p.Observaciones === 'Demandado') {
               if (p.Parametros.check) {
                 if (p.Parametros.Seguro.check)
                 c.Demandados.push(p.Parametros.Seguro.CiaSeguro)
@@ -159,7 +184,11 @@ export default {
               } else {
                 c.Demandados.push(p.Nombres)
               }
+
+              pc.push(p)
             } else {
+              pc.push(p)
+
               c.Actores.push({
                 IdPersona: p.IdPersona,
                 Persona: p.Apellidos
@@ -169,6 +198,8 @@ export default {
               })
             }
           })
+
+          c.PersonasCaso = pc
 
           c.Estudios = JSON.parse(c.Estudios)
 
@@ -255,6 +286,20 @@ export default {
         this.tab = 'novedades'
       }, 150);
     },
+    abrirChat (c) {
+      this.casoAbierto = c
+
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          name: 'Chat'
+        }
+      })
+      
+      setTimeout(() => {
+        this.tab = 'chat'
+      }, 50);
+    },
     buscarAudiencias () {
       const usuario = auth.UsuarioLogueado.Usuario
 
@@ -290,6 +335,6 @@ export default {
 }
 
 .panel-index {
-  height: calc(100vh - 112px) !important;
+  height: calc(100vh - 162px) !important;
 }
 </style>

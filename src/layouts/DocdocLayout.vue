@@ -306,7 +306,6 @@ export default {
     headerNombre () {
       if (this.$route.name === 'Mis Casos') {
         const tab = this.$route.query.tab
-
         switch (tab) {
           case 'casos':
             return 'Mis Casos'
@@ -325,6 +324,9 @@ export default {
 
           case 'personas':
             return 'Personas del Caso'
+
+          case 'chat':
+            return 'Chat'
         }
       } else {
         return this.$route.name

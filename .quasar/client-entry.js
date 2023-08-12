@@ -33,7 +33,7 @@ import 'quasar/dist/quasar.styl'
 
 
 
-import 'src/css/app.scss'
+import 'src/css/app.css'
 
 
 import Vue from 'vue'

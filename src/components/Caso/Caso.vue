@@ -1,5 +1,16 @@
 <template>
-  <div class="q-py-xl q-px-sm row" style="padding-top: 0px;padding-bottom: 0px">
+  <div class="q-py-xl q-px-sm row relative-position" style="padding-top: 0px;padding-bottom: 0px">
+    <q-btn
+      class="absolute-top-right q-mt-md q-mr-md"
+      round
+      icon="chat"
+      @click="$emit('abrirChat', casoAbierto)"
+    >
+      <q-badge v-if="casoAbierto.mensajesNuevos" style="border-radius: 1em;padding: 7px;z-index: 5000" floating color="red" rounded>
+        {{ casoAbierto.mensajesNuevos }}
+      </q-badge>
+    </q-btn>
+
     <!-- Seccion de datos del caso -->
     <div class="col-12">
       <data-item
@@ -8,6 +19,10 @@
         label="Caratula"
         labelColor="accent"
       />
+
+      <q-badge color="teal" rounded>
+        {{ casoAbierto.EstadoAmbitoGestion }}
+      </q-badge>
     </div>
 
     <!-- Seccion de personas del caso -->
@@ -69,7 +84,7 @@
         v-for="(m, i) in movimientos"
         :key="m.IdMovimientoCaso"
         :name="m.IdMovimientoCaso"
-        :class="`column text-weight-medium no-wrap flex-center ${classNov(i) === 'bg-negative' ? 'text-white' : ''}`"
+        :class="`column q-pt-none text-weight-medium no-wrap flex-center ${classNov(i) === 'bg-negative' ? 'text-white' : ''}`"
       >
         <div
           :class="`full-width q-px-md column justify-center ${classNov(i)}`"
@@ -298,6 +313,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.q-carousel__prev-arrow--vertical {
+  top: 0px;
+}
+</style>
 
 <style scoped>
 .contenedor_personas {

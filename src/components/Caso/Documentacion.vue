@@ -14,6 +14,18 @@
       <div class="text-teal text-bold text-subtitle1">
         Se te notificará en cuanto el estudio requiera documentación para tu caso
       </div>
+
+      <q-uploader
+        label="Documentación"
+        auto-upload
+        multiple
+        :factory="factoryFn"
+        @uploaded="uploadedFile"
+        @finish="finishUpload"
+        @failed="verErrorUpload"
+        @factory-failed="verErrorUpload"
+        style="width: 70%; margin-top: 10px"
+      />
     </div>
 
     <div
@@ -68,10 +80,11 @@
       {{ progresoDocTotal() }}
 
       <div
-        v-if="porcentajeTotal !== 100"
-        class="column items-center text-teal text-weight-bold q-mt-xl text-center"
+        class="column items-center text-teal text-weight-bold q-mt-xl text-center full-width"
       >
-        Envía la documentación solicitada para que el estudio pueda avanzar en tu caso
+        <span v-if="porcentajeTotal !== 100">
+          Envía la documentación solicitada para que el estudio pueda avanzar en tu caso
+        </span>
 
         <q-uploader
           label="Documentación"
@@ -86,8 +99,8 @@
         />
       </div>
       <div
-        v-else
-        class="column items-center text-teal text-weight-bold q-mt-xl text-center"
+        v-if="porcentajeTotal === 100"
+        class="column items-center text-teal text-weight-bold q-my-xl text-center"
       >
         Ya tenemos la documentación necesaria por ahora, se te notificará cualquier novedad del caso.
       </div>
